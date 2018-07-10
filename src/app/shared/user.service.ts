@@ -133,10 +133,10 @@ export class UserService {
     });
   }
 
-  newSessionLog() {
+  newSessionLog(option?: any) {
     this.sessionStart = Date.now();
     return this.getNewLogObj().pipe(switchMap(logObj => {
-      return this.couchService.post(this.logsDb, this.logObj());
+      return this.couchService.post(this.logsDb, this.logObj(), option);
     }),
     map((res: any) => {
       this.sessionRev = res.rev;

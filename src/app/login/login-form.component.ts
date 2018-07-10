@@ -102,7 +102,11 @@ export class LoginFormComponent {
   createParentSession({ name, password }) {
     return this.couchService.post('_session',
       { 'name': name, 'password': password },
-      { withCredentials: true, domain: this.userService.getConfig().parentDomain });
+      { withCredentials: true, domain: this.userService.getConfig().parentDomain })
+      .pipe( switchMap((data) => {
+        // Post new session info to login_activity
+        return this.userService.newSessionLog( {domain: this.userService.getConfig().parentDomain} );
+      }));
   }
 
   login({ name, password }: {name: string, password: string}, isCreate: boolean) {
