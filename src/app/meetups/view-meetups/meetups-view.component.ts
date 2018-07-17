@@ -112,9 +112,11 @@ export class MeetupsViewComponent implements OnInit, OnDestroy {
     const invites = selected.map((user: any) => {
       return this.inviteNotification(user._id, this.meetupDetail);
     });
+    invites.push(this.inviteCreatorNotification(selected, this.meetupDetail));
+
     this.couchService.post('notifications/_bulk_docs', { docs: invites }).subscribe(res => {
       this.dialogRef.close();
-      this.planetMessageService.showMessage('Invitation' + (invites.length > 1 ? 's' : '') + ' sent successfully');
+      this.planetMessageService.showMessage('Invitation' + (invites.length > 2 ? 's' : '') + ' sent successfully');
     });
   }
 
@@ -122,6 +124,19 @@ export class MeetupsViewComponent implements OnInit, OnDestroy {
     return {
       'user': userId,
       'message': this.userService.get().name + ' would like you to join ' + meetupDetail.title + ' at ' + meetupDetail.meetupLocation,
+      'link': this.router.url,
+      'item': meetupDetail._id,
+      'type': 'meetup',
+      'priority': 1,
+      'status': 'unread',
+      'time': Date.now()
+    };
+  }
+
+  inviteCreatorNotification(users, meetupDetail) {
+    return {
+      'user': meetupDetail.creator || 'SYSTEM',
+      'message': users.length + ' members have been invited to join ' + meetupDetail.title + ' at ' + meetupDetail.meetupLocation,
       'link': this.router.url,
       'item': meetupDetail._id,
       'type': 'meetup',
