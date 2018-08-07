@@ -62,6 +62,7 @@ export class CoursesComponent implements OnInit, AfterViewInit, OnDestroy {
   userShelf: any = [];
   private onDestroy$ = new Subject<void>();
   planetType = this.userService.getConfig().planetType;
+  registrationRequest = this.userService.getConfig().registrationRequest;
 
   constructor(
     private couchService: CouchService,
