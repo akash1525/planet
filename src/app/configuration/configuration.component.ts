@@ -235,22 +235,29 @@ export class ConfigurationComponent implements OnInit {
     if (!this.allValid()) {
       return;
     }
-    const { credentials, configuration } = this.createConfigurationDocs();
-    if (this.configurationType === 'update') {
-      this.configurationService.updateConfiguration(configuration).subscribe(null,
-        err => this.planetMessageService.showAlert('There was an error updating the configuration'),
-        () => {
-          // Navigate back to the manager dashboard
-          this.router.navigate([ '/manager' ]);
-          this.planetMessageService.showMessage('Configuration Updated Successfully');
-        }
-      );
-    } else {
-      const admin = Object.assign(credentials, this.contactFormGroup.value);
-      this.configurationService.createPlanet(admin, configuration, credentials).subscribe((data) => {
-        this.planetMessageService.showMessage('Admin created: ' + credentials.name);
-        this.router.navigate([ '/login' ]);
-      }, (error) => this.planetMessageService.showAlert('There was an error creating planet'));
+    if (this.contactFormGroup.valid) {
+      const { credentials, configuration } = this.createConfigurationDocs();
+      if (this.configurationType === 'update') {
+        this.configurationService.updateConfiguration(configuration).subscribe(null,
+          err => this.planetMessageService.showAlert('There was an error updating the configuration'),
+          () => {
+            // Navigate back to the manager dashboard
+            this.router.navigate([ '/manager' ]);
+            this.planetMessageService.showMessage('Configuration Updated Successfully');
+          }
+        );
+      } else {
+        const admin = Object.assign(credentials, this.contactFormGroup.value);
+        this.configurationService.createPlanet(admin, configuration, credentials).subscribe((data) => {
+          this.planetMessageService.showMessage('Admin created: ' + credentials.name);
+          this.router.navigate([ '/login' ]);
+        }, (error) => this.planetMessageService.showAlert('There was an error creating planet'));
+      }
+    }else {
+      Object.keys(this.contactFormGroup.controls).forEach(field => {
+        const control = this.contactFormGroup.get(field);
+        control.markAsTouched({ onlySelf: true });
+      });
     }
   }
 
