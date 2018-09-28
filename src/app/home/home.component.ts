@@ -12,7 +12,7 @@ import { debug } from '../debug-operator';
 import { PouchAuthService } from '../shared/database';
 
 @Component({
-  templateUrl: './home.component.html',
+  templateUrl: './home-classic.component.html',
   styleUrls: [ './home.scss' ],
   animations: [
     trigger('sidenavState', [
