@@ -9,7 +9,7 @@ import { DialogsListService } from '../shared/dialogs/dialogs-list.service';
 import { DialogsListComponent } from '../shared/dialogs/dialogs-list.component';
 import { SubmissionsService } from '../submissions/submissions.service';
 import { PlanetMessageService } from '../shared/planet-message.service';
-import { UserService } from '../shared/user.service';
+import { ConfigurationService } from '../configuration/configuration.service';
 
 @Component({
   'templateUrl': './surveys.component.html'
@@ -30,7 +30,7 @@ export class SurveysComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private userService: UserService
+    private configurationService: ConfigurationService
   ) {}
 
   ngOnInit() {
@@ -88,7 +88,7 @@ export class SurveysComponent implements OnInit, AfterViewInit {
           allowMulti: true,
           okClick: this.sendSurvey(survey).bind(this),
           dropdownSettings: {
-            field: 'planetCode', startingValue: { value: this.userService.getConfig().code, text: 'Local' },
+            field: 'planetCode', startingValue: { value: this.configurationService.configuration.code, text: 'Local' },
           },
           filterPredicate: filterSpecificFields([ 'name' ])
         },
