@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { RatingService } from '../shared/forms/rating.service';
 import { UserService } from '../shared/user.service';
 import { PlanetMessageService } from '../shared/planet-message.service';
-import { ConfigurationService } from '../configuration/configuration.service';
+import { StateService } from '../shared/state.service';
 
 @Injectable()
 export class ResourcesService {
@@ -22,7 +22,7 @@ export class ResourcesService {
     private ratingService: RatingService,
     private userService: UserService,
     private planetMessageService: PlanetMessageService,
-    private configurationService: ConfigurationService
+    private stateService: StateService
   ) {
     this.ratingService.ratingsUpdated$.subscribe((res: any) => {
       const planetField = res.parent ? 'parent' : 'local';
@@ -40,7 +40,7 @@ export class ResourcesService {
   }
 
   requestResourcesUpdate(parent: boolean) {
-    const opts = parent ? { domain: this.configurationService.configuration.parentDomain } : {};
+    const opts = parent ? { domain: this.stateService.configuration.parentDomain } : {};
     const currentResources = parent ?
       this.resources.parent : this.resources.local;
     const planetField = parent ? 'parent' : 'local';
